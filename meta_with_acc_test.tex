@@ -1,0 +1,300 @@
+\newif\iflatextortf
+
+\iflatextortf
+	% tell latex2tortf if this is an article or report
+	\documentclass[12pt,letterpaper]{article}
+	\input{Latex2rtf_meta_with_acc.tex}
+\else
+	\documentclass[10pt,article,twocolumn]{meta}
+	\usepackage[tagged]{accessibility}	
+\fi
+% code treatment
+\makeatletter
+\@ifundefined{lstlisting}{}{%
+  \let\verbatim\relax%
+  \lstnewenvironment{verbatim}{\lstset{language=[LaTeX]TeX,                     % the language of the code
+  basicstyle=\small\sffamily,
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,        % sets if automatic breaks should only happen at whitespace
+  keywordstyle=\color{blue},      % keyword style
+  commentstyle=\color{gray},   % comment style
+  stringstyle=\color{green},      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}}%            % if you want to add more keywords to the set
+}{}%
+}
+\makeatother
+% new commands
+\newcommand{\fn}[1]{\emph{#1}}
+\newcommand{\packagename}[1]{\textbf{\emph{#1}}}
+\newcommand{\envname}[1]{\textbf{\texttt{#1}}}
+
+\author{Andy Clifton}
+\title{So you want to replace your WYSIWYG word processor but 508 compliance has you stumped}
+ 
+\begin{document}
+% see http://stackoverflow.com/questions/3387971/setting-pdftitle-and-pdfauthor-automatically-in-a-latex-stylesheet
+\maketitle
+  
+\section*{Abstract}
+Ease of use and development of standard processes mean that WYSIWYG word processors are frequently used within organizations to produce documents that are edited and reviewed using tools built in to the word processors. Unfortunately, there are no widely-adopted methods of editing and reviewing \LaTeX. Also, these WYSIWYG word processors can be used to produce PDF documents that pass automated accessibility testing. Although \LaTeX produces high-quality PDF files, these do not pass automated accessibility tests. There is therefore a need to produce \LaTeX\ documents that can be transferred to WYSIWYG tools for review and editing, and where the output PDF satisfies accessibility requirements and tests. 
+
+This document explains how \LaTeX\ can be used to prepare \LaTeX source that can be converted in to an \fn{.rtf} file to be read in to a WYSIWYG word processor, and PDF files that satisfy accessibility requirements. This document can also be used as a template as it contains most of the elements of a technical \LaTeX\ document, including complex structures, lists, equations, figures and code listings.
+
+\renewcommand{\contentsname}{Table of Contents}
+\tableofcontents
+\listoffigures
+\listoftables
+\pagenumbering{arabic}
+
+\section{Introduction}
+The de-facto standard for scientific publishing is \LaTeX. However, most organizations are built around a small number of WYSIWYG word-processing tools, many of which are now integrated with PDF creators. Some organizations like the workflow capabilities that are integrated in the word processing tools, such as the ability to edit a document and track input from co-workers or dedicated editors. That capability can be partly replicated by tools such as \packagename{latexdiff} which allows different versions of a \LaTeX\ source file to be compared, but these tools are not easy for a non-technical author to learn as they require that the \LaTeX\ source be edited. This document therefore provides a workflow for converting the \LaTeX\ document to Rich Text Format (\fn{.rtf}), which can be imported into most WYSIWYG tools.
+
+Since the Section 508 Amendment to the Rehabilitation Act of 1973 was passed by the US Congress in 1998, it has been a requirement that all federally-funded documents are accessible to people with disabilities. An accessible PDF has several characteristics:
+
+\begin{itemize}
+\item All of the document content has been tagged
+\item it is possible to define a reading order based on those tags
+\item Images and links are given alternate text descriptions
+\item Tables are tagged, so that the table structure can be established
+\item Unicode descriptions of all characters are required
+\end{itemize}
+
+An important practical application of an accessible document is that it is possible to `reflow' a text document, so that it can be displayed on any device with any number of characters per row.
+
+In this document, we explain how a custom class file can be used to generate a range of document formats with common formatting, and how the document content can be shared with coworkers using WYSIWYG tools. We explain how the same source file can be used to generate a 508-compliant PDF direct from \LaTeX. We also show some of the limitations of the method and what remains to be fixed. Our goal is that this will be a `living' document that can be updated as we gain new insight into this process.
+
+\section{The pieces of the puzzle}
+
+\subsection{Producing an accessible PDF from LaTeX}
+
+\subsubsection{A ``meta'' LaTeX style file}\label{sec:meta.cls}
+A class file called \fn{meta.cls} has been written to implement common formatting requirements in \LaTeX\ across the standard \LaTeX\ article, report, book, and memoir classes. The class file calls a common group of packages (Table \ref{Tab:Packages}) regardless of the chosen class. Slightly different options are chosen for those packages if the document uses the memoir class, or if the document uses chapters or not. The class can be customized to meet specific formatting requirements. 
+
+This approach gives a single file which contains all of the formatting required to produce a range of documents. For example, an organization that wants to implement an in-house \LaTeX\ publishing system can customize the \fn{meta.cls} and then make the class file available through a subversion server from which authors pick up the current class file. Each user can then install the class file in their tex structure or in the directory with their files. Similarly, changes are easy to implement in the style file and roll out to users, and because documents are \LaTeX-based it is easy to recompile old documents.
+
+The \packagename{meta} class is written so that it will accept all of the standard global \LaTeX\ options, as well as options that are specific to the underlying class that the user has chosen. In the preamble, the user just has to write:
+
+\begin{verbatim}
+\documentclass[draft, report]{meta}
+\end{verbatim}
+
+\noindent to specify the options (inside the square brackets) that will be passed to the \packagename{meta} class. 
+
+Options that have been implemented include:
+\begin{description}
+\item[book]{compile the document using the \LaTeX\ \emph{book} class. This is intended for longer documents and allows the use of chapters.}
+\item[report]{compile the document using the \LaTeX\ \emph{report} class. This is intended for longer documents and allows the use of chapters.}
+\item[article]{compile the document using the \LaTeX\ \emph{article} class. This is intended for shorter documents such as journal articles. This class does not support the use of chapters.}
+\item[memoir]{compile the document using the \LaTeX\ \emph{memoir} class. This option is not recommended because of the challenge with later converting to rtf format.}
+\item[draft]{add a `draft' watermark to all pages and colours all links in blue.}
+\item[10pt, 12pt]{set the font size accordingly. The default is 12 point.}
+\item[letterpaper, a4paper]{set the paper size. the default is letter paper.}
+\end{description}
+
+Table \ref{Tab:Packages} lists the packages that are explicitly called by \packagename{meta} in the order they are called in. These packages often call other packages, so this is not an exhaustive list.
+
+\begin{table*}[htp]
+\centering
+\caption[Packages explicitly loaded by the meta class]{Packages explicitly loaded by the \emph{meta} class. Unless otherwise stated, packages are not supported by \texttt{latex2rtf}.}
+\label{Tab:Packages}
+\begin{tabular*}{\textwidth}{p{0.125\textwidth}p{0.1\textwidth}p{0.4\textwidth}p{0.1\textwidth}p{0.2\textwidth}}
+\toprule
+Packages & options & functionality & \texttt{latex2rtf} support & \texttt{latex2rtf} workaround\\
+\midrule
+nag & & checks that packages are up to date and looks for bad habits in \LaTeX\ code. & &\\
+geometry & & sets page size and margins & \checkmark &\\
+mathptmx& & changes fonts & & \\
+helvet& & changes fonts & &\\
+courier& & changes fonts & &\\
+amsfonts, amssymb & & supplies fonts that are useful for mathematics & &\\
+booktabs & & & &\\
+graphicx & &graphics handling, including \emph{.eps} figures (see Section \ref{sec:Alttext}) & \checkmark &\\
+natbib & sort &handles citations and allows the \verb+\cite+, \verb+\citep+ and \verb+\citet+ citation commands. & \checkmark &\\
+fontenc & T1 & & &\\
+xcolor & & & &\\
+babel & english & & &\\
+subfig & & provides the \texttt{subfloat} environment to produce sub figures & \checkmark & \emph{subfloat} is mapped to the \emph{subfigure} command \\
+hyphenat & & & &\\
+setspace & & & &\\
+parskip & & & &\\
+toclof & subfigure & & & \\
+toclifbind & nottoc, notlot, notlof & & &\\
+todonotes & & inline and margin to-do notes & \checkmark & Notes are prefaced with \textbf{To Do:} in the output\\
+caption & & & &\\
+pdfcomment & & tool-tips. Also calls the package \packagename{hyperref} & \checkmark & the tool tip is suppressed \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\subsubsection{Alternative text}\label{sec:Alttext}
+Alernative text, or `Alt text', is a textual description of an equation, link or figure that can be used to replace the visual information in that element. This is often seen as a text `pop-up' in PDF readers. For example, passing the pointer over the following readers should reveal a pop-up:
+\begin{equation}
+\pdftooltip{a^2+b^2=c^2}{An equation}
+\end{equation}
+
+Alt text can be added after the PDF is compiled using a PDF editor such as Adobe's Acrobat Pro. Alternatively -- and probably best for ensuring that the final document is what the author intended -- it can be generated from within the source document using the \envname{pdftooltip} environment from the \packagename{pdfcomment} package. The general form of the command is:
+
+\begin{verbatim}
+\pdftooltip{<item>}{<alt text>}
+\end{verbatim}
+
+The previous equation was generated using this code:
+
+\begin{verbatim}
+\begin{equation}
+\pdftooltip{a^2+b^2=c^2}{An equation}
+\end{equation}
+\end{verbatim}
+
+The same approach can be used to create alt text for images. For example, Figure \ref{fig:TestimagesWithAltText} has been labeled. 
+
+\begin{figure*}[htp]
+\centering
+\subfigure[A chick.\label{fig:ChickWithAltText}]{\pdftooltip{\includegraphics[height=2.5in]{Chick1}}{A bright yellow toy model of a chick}}
+~
+\subfigure[Another chick.\label{fig:ChickWithAltText2}]{\pdftooltip{\includegraphics[height=2.5in]{Chick1}}{A second image of a bright yellow toy model of a chick}}
+\caption{Test images}\label{fig:TestimagesWithAltText}
+\end{figure*}
+
+\subsubsection{Preparing a structured PDF}\label{sec:PDFprep}
+\LaTeX\ does not prepare a structured PDF document directly. Instead, we use the \packagename{accessibility} package to do this for us. This generates a tagged PDF that passes most automated document tests.
+
+\subsubsection{Problems with embedded fonts}
+One requirement of passing automated tests for accessibility is that fonts must be embedded in the the final PDF. You can check the PDF for embedded fonts using a PDF viewer. For example, in Adobe Acrobat Reader, look at the `fonts' tag of the document properties. If any fonts are not shown as being an \emph{embedded subset}, you need to try again. 
+
+Encapsulated postscript figures are particularly prone to having undefined fonts. Check by compiling your document in draft mode, and seeing if the fonts are still present in the output PDF. To fix this problem, you could consider changing the \emph{.eps} file to a \emph{.png}. If you wish to do this `on the fly', you could use this approach in your preamble:
+
+\begin{verbatim}
+\usepackage{epstopdf}
+\epstopdfDeclareGraphicsRule
+ {.eps}{png}{.png}{convert eps:\SourceFile.\SourceExt png:\OutputFile}
+\AppendGraphicsExtensions{.png}
+\end{verbatim}
+
+\subsection{Changing to a WYSIWYG-readable format using Latex2rtf}
+\packagename{latex2rtf} reads \fn{.tex} files and converts common \LaTeX commands into their rich text format equivalent. It can be downloaded from \url{http://latex2rtf.sourceforge.net}.
+
+We want to use the same source file for the PDF and for the conversion to a WYSIWYG-readable format. To ensure compatibility between the \fn{.tex} file and \packagename{latex2rtf}, we limit the packages used in the \packagename{meta} class to those that can be understood by \packagename{latex2rtf}. Also, \packagename{latex2rtf} can read \envname{input} files and has some capacity to deal with \envname{\textbackslash newcommand}s. Therefore, we have created a file to remap all of the environments that are available using the \packagename{meta} class to simpler forms that can be understood by \packagename{latex2rtf}. This file is called \fn{Latex2rtf\_meta\_with\_acc.tex}. 
+
+If you are using the command line version of Latex2rtf, you can convert your latex file using the commands,
+
+\begin{verbatim}
+latex foo.tex
+latex foo.tex
+latex2rtf foo
+\end{verbatim}
+
+You may get some error messages, which may or may not be important. Check the file was produced by opening the \fn{.rtf} file in your favorite WYSIWYG package. If it works, save it in that proprietary format, and distribute it for your non-\LaTeX ing coworkers.
+
+The following are suggested as best practices when working with \packagename{latex2rtf}:
+
+\begin{description}
+\item[Convert early and often.] Check that your document converts using \packagename{latex2rtf} every time you use  a new environment.
+\item[Check new packages.]  If you add a new package to the \fn{meta.cls} file (not recommended), try the conversion immediately, and then again once you actually use one of the new environments or commands. If you've added a new package that \packagename{latex2rtf} doesn't support, you may need to edit the file \fn{Latex2rtf\_meta\_with\_acc.tex} to redefine those commands to something that will get you through the conversion (and review).
+\item[Avoid custom commands.] \packagename{latex2rtf} does not work well with custom commands. A list of all recognized commands is available in the manual at \url{http://latex2rtf.sourceforge.net/latex2rtf.pdf}. If you have custom commands, you may need to redefine those to work with the commands that \packagename{latex2rtf} does recognize, and place these in the preamble. To separate your commands from those that are required for compatibility with the \packagename{meta} class, place your commands in a separate file (e.g \fn{Latex2rtf\_meta\_with\_acc\_CUSTOM.tex}).
+\item[Remove all of your to-do notes.] We've all forgotten to do this at one time or another...
+\end{description}
+
+\subsection{Putting the puzzle together}
+So far we have identified two discrete paths that our document will take. These are 1. compiling the \LaTeX\ document using normal \packagename{pdftex}, and 2. converting to something portable using \packagename{latex2rtf}. And, to keep things tidy, we would like to use the same source for each step. 
+
+Fortunately, \packagename{latex2rtf} offers a boolean, \envname{\textbackslash iflatextortf}. If \packagename{latex2rtf} is used, \envname{\textbackslash iflatextortf} will be TRUE. This means that we can create a preamble that accommodates both paths:
+
+\begin{verbatim}
+\newif\iflatextortf
+
+\iflatextortf
+    \documentclass[10pt, letterpaper]{report}
+    \input{Latex2rtf_meta_with_acc.tex}
+\else
+    \documentclass[draft, report]{meta} 
+\fi
+\end{verbatim}
+
+\subsection{Including code listings}
+The \packagename{listings} package is one of several packages that can be used to typeset source code, and is used in this document. Unfortunately, \packagename{listings} is not compatible with \packagename{latex2rtf}, and so we need a workaround that will be available to both \packagename{latex2rtf} and \packagename{pdflatex}. 
+
+Using an example from Werner posted on tex.stackexchange.com, we default to the \envname{verbatim} environment, and only use \packagename{listings} if we are compiling with \packagename{pdflatex}:
+
+\begin{verbatim}%
+\makeatletter
+\@ifundefined{lstlisting}{}{%
+  \let\verbatim\relax%
+  \lstnewenvironment{verbatim}{
+      \lstset{language=[LaTeX]TeX,
+      ... % here we can customize the listing
+  }}{}%
+}
+\makeatother
+\end{verbatim}
+
+
+\subsection{The final preamble}
+
+\begin{verbatim}%
+\newif\iflatextortf
+
+\iflatextortf
+    \documentclass[10pt, letterpaper]{report}
+    \input{Latex2rtf_meta_with_acc.tex}
+\else
+    \documentclass[draft, report]{meta} 
+\fi
+
+\makeatletter
+\@ifundefined{lstlisting}{}{%
+  \let\verbatim\relax%
+  \lstnewenvironment{verbatim}{
+      \lstset{language=[LaTeX]TeX,
+      ... % here we can customize the listing
+  }}{}%
+}
+\makeatother
+
+\author{Andy Clifton}
+\title{So you want to replace your WYSIWYG word processor but 508 compliance has you stumped}
+ 
+\begin{document}
+
+\end{verbatim}
+
+\subsection{Code to produce this document}
+The code used to produce this document is available from \href{https://github.com/AndyClifton/AccessibleMetaClass}{https://github.com/AndyClifton/AccessibleMetaClass}. 
+
+Compiling the \LaTeX\ source requires the \packagename{accessilbity.sty} package, which can be downloaded from \href{http://www.babs.gmxhome.de/download/da_pdftex/accessibility.sty}{http://www.babs.gmxhome.de/download/da\_pdftex/accessibility.sty}. Note that line 131 in \packagename{accessilbity.sty} should be commented out (\fn{pdfoptionpdfminorversion} is set elsewhere).
+
+\section{What doesn't work}
+There are a few things that still need to be fixed.
+
+\begin{itemize}
+\item Problems associated with the \packagename{accessibility} package:
+\begin{itemize}
+\item formatting in section headings such as \verb+\emph{}+ breaks compiling
+\item empty \fn{.bbl} files also break it
+\item there's an extra line at the start of \envname{lstlisting} environments
+\end{itemize}
+\end{itemize}
+
+\section{Conclusions}
+In order to generate accessible \fn{.pdf} files with \LaTeX\ that can also be shared with WYSIWYG word processor users, a \LaTeX\ meta class was created. This meta class uses a well-defined set of packages that limits the scope of the casual 'tex author from fiddling, whilst giving them tools to create complex technical documents. Accessible \fn{.pdf} files are compiled directly from the \LaTeX source code, while \fn{.rtf} files are written using the \packagename{latex2rtf} program. This meets the users' need for a single source file and minimal intervention.
+
+\section*{Acknowledgements}
+This document benefitted from contributions to the website, \url{http://tex.stackexchange.com/}.
+
+\end{document}
+% bibliography
+\cleardoublepage
+\bibliographystyle{plainnat}
+%\bibintoc
+\label{sec:Bib}
+\bibliography{bibliography}
+
+\end{document}

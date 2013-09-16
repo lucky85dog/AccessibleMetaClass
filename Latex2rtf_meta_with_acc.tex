@@ -1,0 +1,34 @@
+% set margins
+\usepackage[margin=1 in]{geometry}
+
+% use citations
+\usepackage[sort]{natbib}
+
+% change the heading of the bibliography
+\renewcommand{\bibsection}{\section{References}}
+
+% redefine \pdftooltip so that it behaves differently with and without latextortf
+\newcommand{\pdftooltip}[3][]{#2}
+
+% redefine the checkmark
+\newcommand{\checkmark}{y\relax}
+
+% redefine the degree symbol to remove dependency on gensymb package
+\newcommand{\degree}{\ensuremath{^\circ}}
+
+% redefine booktabs commands
+\newcommand{\toprule}{\hline}
+\newcommand{\midrule}{\hline}
+\newcommand{\bottomrule}{\hline}
+
+% redefine \href
+\newcommand{\href}[2]{#1~ (\url{#2})}
+
+% redefine \subfloat to match the \subfigure environment
+\usepackage{subfigure}
+\makeatletter
+\newcommand{\subfloat}[3][]{\subfigure[{#1}]{#2}{#3}}
+\makeatother
+
+% redefine \todo so that it gives something useful
+\newcommand{\todo}[2][]{\textbf{To Do:} #2}
