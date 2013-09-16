@@ -46,7 +46,7 @@
 \section*{Abstract}
 Ease of use and development of standard processes mean that WYSIWYG word processors are frequently used within organizations to produce documents that are edited and reviewed using tools built in to the word processors. Unfortunately, there are no widely-adopted methods of editing and reviewing \LaTeX. Also, these WYSIWYG word processors can be used to produce PDF documents that pass automated accessibility testing. Although \LaTeX produces high-quality PDF files, these do not pass automated accessibility tests. There is therefore a need to produce \LaTeX\ documents that can be transferred to WYSIWYG tools for review and editing, and where the output PDF satisfies accessibility requirements and tests. 
 
-This document explains how \LaTeX\ can be used to prepare \LaTeX source that can be converted in to an \fn{.rtf} file to be read in to a WYSIWYG word processor, and PDF files that satisfy accessibility requirements. This document can also be used as a template as it contains most of the elements of a technical \LaTeX\ document, including complex structures, lists, equations, figures and code listings.
+This document explains how \LaTeX\ can be used to prepare \LaTeX source that can be converted in to an \fn{.rtf} file to be read in to a WYSIWYG word processor. The same source can be used to create \fn{.pdf} files that satisfy accessibility requirements. This document can also be used as a template as it contains most of the elements of a technical \LaTeX\ document, including complex document structures, lists, equations, figures and code listings.
 
 \renewcommand{\contentsname}{Table of Contents}
 \tableofcontents
@@ -55,27 +55,37 @@ This document explains how \LaTeX\ can be used to prepare \LaTeX source that can
 \pagenumbering{arabic}
 
 \section{Introduction}
-The de-facto standard for scientific publishing is \LaTeX. However, most organizations are built around a small number of WYSIWYG word-processing tools, many of which are now integrated with PDF creators. Some organizations like the workflow capabilities that are integrated in the word processing tools, such as the ability to edit a document and track input from co-workers or dedicated editors. That capability can be partly replicated by tools such as \packagename{latexdiff} which allows different versions of a \LaTeX\ source file to be compared, but these tools are not easy for a non-technical author to learn as they require that the \LaTeX\ source be edited. This document therefore provides a workflow for converting the \LaTeX\ document to Rich Text Format (\fn{.rtf}), which can be imported into most WYSIWYG tools.
+The de-facto standard for scientific publishing is \LaTeX. \LaTeX\ is often preferred for technical documents because of the relatively simple file format that can be shared across users on many different platforms, and the ease of formatting a document for journal publication. In contrast, many organizations that have a well-defined publishing workflow are built around a small number of WYSIWYG word-processing tools, many of which are now integrated with PDF creators. Commercial word processing tools often include the ability to edit a document and track input from co-workers or dedicated editors. While changes can be compared between \LaTeX documents using command line tools, many editors lack the skills to edit a \LaTeX\ source file. How, then, can \LaTeX\ be used in an collaboration with WYSIWYG word processing tools?
 
-Since the Section 508 Amendment to the Rehabilitation Act of 1973 was passed by the US Congress in 1998, it has been a requirement that all federally-funded documents are accessible to people with disabilities. An accessible PDF has several characteristics:
+Another issue with using \LaTeX for publications is accessibility. This is particularly challenging for federally-funded organizations: since the US Congress passed the 1998 Section 508 Amendment to the Rehabilitation Act of 1973, it has been a requirement that all federally-funded documents are accessible to people with disabilities. An accessible PDF has several characteristics:
 
 \begin{itemize}
 \item All of the document content has been tagged
-\item it is possible to define a reading order based on those tags
+\item It is possible to define a reading order based on those tags
 \item Images and links are given alternate text descriptions
 \item Tables are tagged, so that the table structure can be established
 \item Unicode descriptions of all characters are required
 \end{itemize}
 
-An important practical application of an accessible document is that it is possible to `reflow' a text document, so that it can be displayed on any device with any number of characters per row.
+A document that has these characteristics is often referred to as being `508 compliant'. This adds another level of complexity: not only does a document need to be converted into something that a WYSIWYG word processor can read, but the output \fn{.pdf} needs to be 508-compliant. As 508-compliance is often judged using automated tests on the \fn{.pdf} file, there is no option to work around this by using careful text descriptions of figures, for example.
 
-In this document, we explain how a custom class file can be used to generate a range of document formats with common formatting, and how the document content can be shared with coworkers using WYSIWYG tools. We explain how the same source file can be used to generate a 508-compliant PDF direct from \LaTeX. We also show some of the limitations of the method and what remains to be fixed. Our goal is that this will be a `living' document that can be updated as we gain new insight into this process.
+In this document, we explain how a custom class file can be used to generate a range of document formats with common formatting, and how the document content can be shared with coworkers using WYSIWYG tools. We explain how the same source file can be used to generate a 508-compliant \fn{*.pdf} direct from \LaTeX. We also show some of the limitations of the method and what remains to be fixed. Our goal is that this will be a `living' document that can be updated as we gain new insight into this process.
 
-\section{The pieces of the puzzle}
+\section{A workflow for producing accessible .pdf files}
+\begin{itemize}
+\item Define a class file that contains the correct formatting, etc, using article, report or book classes. Include the minimum number of up-to-date packages in the class and add the nag package to make sure that all users can see that those packages are not deprecated.
+\item Provide tools to add accessibility support to the \fn{.pdf} file
+\item Create a template showing how to use the class file
+\item Create a source code repository for the class and template files, and distribute the URL of the repository to LaTeX users
+\item Create documents using the standard class file on local or network drives, or using collaborative tools like writeLaTeX
+\item Convert the tex files to rtf using LaTeX2rtf, available at http://latex2rtf.sourceforge.net
+\item Get edits and peer reviews done on a cleaned-up .rtf file that has been saved as .doc or .docx
+\item Transfer edits from the .doc or .docx document back in to 'tex manually, and complete the PDF production in LaTeX.
+\end{itemize}
 
-\subsection{Producing an accessible PDF from LaTeX}
+The rest of this section gives details on each of the above steps.
 
-\subsubsection{A ``meta'' LaTeX style file}\label{sec:meta.cls}
+\subsection{A ``meta'' LaTeX style file}\label{sec:meta.cls}
 A class file called \fn{meta.cls} has been written to implement common formatting requirements in \LaTeX\ across the standard \LaTeX\ article, report, book, and memoir classes. The class file calls a common group of packages (Table \ref{Tab:Packages}) regardless of the chosen class. Slightly different options are chosen for those packages if the document uses the memoir class, or if the document uses chapters or not. The class can be customized to meet specific formatting requirements. 
 
 This approach gives a single file which contains all of the formatting required to produce a range of documents. For example, an organization that wants to implement an in-house \LaTeX\ publishing system can customize the \fn{meta.cls} and then make the class file available through a subversion server from which authors pick up the current class file. Each user can then install the class file in their tex structure or in the directory with their files. Similarly, changes are easy to implement in the style file and roll out to users, and because documents are \LaTeX-based it is easy to recompile old documents.
@@ -134,6 +144,9 @@ pdfcomment & & tool-tips. Also calls the package \packagename{hyperref} & \check
 \end{tabular*}
 \end{table*}
 
+\subsection{Accessibility support}
+\LaTeX\ does not prepare a structured PDF document directly. Instead, we use the \packagename{accessibility} package to do this for us. This generates a tagged PDF that passes most automated document tests. The \packagename{accessibility.sty} package can be downloaded from \href{http://www.babs.gmxhome.de/download/da_pdftex/accessibility.sty}{http://www.babs.gmxhome.de/download/da\_pdftex/accessibility.sty}. Note that line 131 in \packagename{accessibility.sty} should be commented out (\fn{pdfoptionpdfminorversion} is set elsewhere).
+
 \subsubsection{Alternative text}\label{sec:Alttext}
 Alernative text, or `Alt text', is a textual description of an equation, link or figure that can be used to replace the visual information in that element. This is often seen as a text `pop-up' in PDF readers. For example, passing the pointer over the following readers should reveal a pop-up:
 \begin{equation}
@@ -164,9 +177,6 @@ The same approach can be used to create alt text for images. For example, Figure
 \caption{Test images}\label{fig:TestimagesWithAltText}
 \end{figure*}
 
-\subsubsection{Preparing a structured PDF}\label{sec:PDFprep}
-\LaTeX\ does not prepare a structured PDF document directly. Instead, we use the \packagename{accessibility} package to do this for us. This generates a tagged PDF that passes most automated document tests.
-
 \subsubsection{Problems with embedded fonts}
 One requirement of passing automated tests for accessibility is that fonts must be embedded in the the final PDF. You can check the PDF for embedded fonts using a PDF viewer. For example, in Adobe Acrobat Reader, look at the `fonts' tag of the document properties. If any fonts are not shown as being an \emph{embedded subset}, you need to try again. 
 
@@ -178,6 +188,9 @@ Encapsulated postscript figures are particularly prone to having undefined fonts
  {.eps}{png}{.png}{convert eps:\SourceFile.\SourceExt png:\OutputFile}
 \AppendGraphicsExtensions{.png}
 \end{verbatim}
+
+\subsection{A template}
+The code used to produce this document is available from \href{https://github.com/AndyClifton/AccessibleMetaClass}{https://github.com/AndyClifton/AccessibleMetaClass}. 
 
 \subsection{Changing to a WYSIWYG-readable format using Latex2rtf}
 \packagename{latex2rtf} reads \fn{.tex} files and converts common \LaTeX commands into their rich text format equivalent. It can be downloaded from \url{http://latex2rtf.sourceforge.net}.
@@ -203,8 +216,13 @@ The following are suggested as best practices when working with \packagename{lat
 \item[Remove all of your to-do notes.] We've all forgotten to do this at one time or another...
 \end{description}
 
-\subsection{Putting the puzzle together}
-So far we have identified two discrete paths that our document will take. These are 1. compiling the \LaTeX\ document using normal \packagename{pdftex}, and 2. converting to something portable using \packagename{latex2rtf}. And, to keep things tidy, we would like to use the same source for each step. 
+\section{Unified source document}
+So far we have identified two discrete paths that our document will take. These are 
+\begin{enumerate}
+\item Compiling the \LaTeX\ document using normal \packagename{pdftex}
+\item Converting to something portable using \packagename{latex2rtf}. 
+\end{enumerate}
+And, to keep things tidy, we would like to use the same source for each step. 
 
 Fortunately, \packagename{latex2rtf} offers a boolean, \envname{\textbackslash iflatextortf}. If \packagename{latex2rtf} is used, \envname{\textbackslash iflatextortf} will be TRUE. This means that we can create a preamble that accommodates both paths:
 
@@ -266,12 +284,7 @@ Using an example from Werner posted on tex.stackexchange.com, we default to the 
 
 \end{verbatim}
 
-\subsection{Code to produce this document}
-The code used to produce this document is available from \href{https://github.com/AndyClifton/AccessibleMetaClass}{https://github.com/AndyClifton/AccessibleMetaClass}. 
-
-Compiling the \LaTeX\ source requires the \packagename{accessilbity.sty} package, which can be downloaded from \href{http://www.babs.gmxhome.de/download/da_pdftex/accessibility.sty}{http://www.babs.gmxhome.de/download/da\_pdftex/accessibility.sty}. Note that line 131 in \packagename{accessilbity.sty} should be commented out (\fn{pdfoptionpdfminorversion} is set elsewhere).
-
-\section{What doesn't work}
+\section{Problems with this approach}
 There are a few things that still need to be fixed.
 
 \begin{itemize}

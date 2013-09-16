@@ -72,7 +72,7 @@
 }
 {\info
 {\title Original file was DemoAccMetaClass.tex}
-{\doccomm Created using latex2rtf 2.3.3 r1230 (released Feb 26, 2013) on Mon Sep 16 11:27:13 2013
+{\doccomm Created using latex2rtf 2.3.3 r1230 (released Feb 26, 2013) on Mon Sep 16 12:07:27 2013
 }
 }
 {\footer\pard\plain\f0\fs24\qc\chpgn\par}
@@ -82,7 +82,7 @@
 \pard\plain\s21\qc\sa120\f0\fs24\sl240\slmult1 \fi360 \chdate \par
 \pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb240 \fi0 Abstract\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 Ease of use and development of standard processes mean that WYSIWYG word processors are frequently used within organizations to produce documents that are edited and reviewed using tools built in to the word processors. Unfortunately, there are no widely-adopted methods of editing and reviewing {\plain L{\up6\fs19 A}T{\dn7 E}X}. Also, these WYSIWYG word processors can be used to produce PDF documents that pass automated accessibility testing. Although {\plain L{\up6\fs19 A}T{\dn7 E}X}produces high-quality PDF files, these do not pass automated accessibility tests. There is therefore a need to produce {\plain L{\up6\fs19 A}T{\dn7 E}X} documents that can be transferred to WYSIWYG tools for review and editing, and where the output PDF satisfies accessibility requirements and tests. \par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 This document explains how {\plain L{\up6\fs19 A}T{\dn7 E}X} can be used to prepare {\plain L{\up6\fs19 A}T{\dn7 E}X}source that can be converted in to an {\i .rtf} file to be read in to a WYSIWYG word processor, and PDF files that satisfy accessibility requirements. This document can also be used as a template as it contains most of the elements of a technical {\plain L{\up6\fs19 A}T{\dn7 E}X} document, including complex structures, lists, equations, figures and code listings.\par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 This document explains how {\plain L{\up6\fs19 A}T{\dn7 E}X} can be used to prepare {\plain L{\up6\fs19 A}T{\dn7 E}X}source that can be converted in to an {\i .rtf} file to be read in to a WYSIWYG word processor. The same source can be used to create {\i .pdf} files that satisfy accessibility requirements. This document can also be used as a template as it contains most of the elements of a technical {\plain L{\up6\fs19 A}T{\dn7 E}X} document, including complex document structures, lists, equations, figures and code listings.\par
 \pard\plain\s80\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \fi0  Contents\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi0 \par
 {\field{\*\fldinst TOC \\o "1-3" }{\fldrslt }}
@@ -96,23 +96,39 @@
 {\field{\*\fldinst TOC \\f t }{\fldrslt }}
 \page
 \pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb300 \fi0 1  Introduction\par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 The de-facto standard for scientific publishing is {\plain L{\up6\fs19 A}T{\dn7 E}X}. However, most organizations are built around a small number of WYSIWYG word-processing tools, many of which are now integrated with PDF creators. Some organizations like the workflow capabilities that are integrated in the word processing tools, such as the ability to edit a document and track input from co-workers or dedicated editors. That capability can be partly replicated by tools such as {\b {\i latexdiff}} which allows different versions of a {\plain L{\up6\fs19 A}T{\dn7 E}X} source file to be compared, but these tools are not easy for a non-technical author to learn as they require that the {\plain L{\up6\fs19 A}T{\dn7 E}X} source be edited. This document therefore provides a workflow for converting the {\plain L{\up6\fs19 A}T{\dn7 E}X} document to Rich Text Format ({\i .rtf}), which can be imported into most WYSIWYG tools.\par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 Since the Section 508 Amendment to the Rehabilitation Act of 1973 was passed by the US Congress in 1998, it has been a requirement that all federally-funded documents are accessible to people with disabilities. An accessible PDF has several characteristics:\par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 The de-facto standard for scientific publishing is {\plain L{\up6\fs19 A}T{\dn7 E}X}. {\plain L{\up6\fs19 A}T{\dn7 E}X} is often preferred for technical documents because of the relatively simple file format that can be shared across users on many different platforms, and the ease of formatting a document for journal publication. In contrast, many organizations that have a well-defined publishing workflow are built around a small number of WYSIWYG word-processing tools, many of which are now integrated with PDF creators. Commercial word processing tools often include the ability to edit a document and track input from co-workers or dedicated editors. While changes can be compared between {\plain L{\up6\fs19 A}T{\dn7 E}X}documents using command line tools, many editors lack the skills to edit a {\plain L{\up6\fs19 A}T{\dn7 E}X} source file. How, then, can {\plain L{\up6\fs19 A}T{\dn7 E}X} be used in an collaboration with WYSIWYG word processing tools? \par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 Another issue with using {\plain L{\up6\fs19 A}T{\dn7 E}X}for publications is accessibility. This is particularly challenging for federally-funded organizations: since the US Congress passed the 1998 Section 508 Amendment to the Rehabilitation Act of 1973, it has been a requirement that all federally-funded documents are accessible to people with disabilities. An accessible PDF has several characteristics:\par
 {\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
 All of the document content has been tagged \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
-it is possible to define a reading order based on those tags \par
+It is possible to define a reading order based on those tags \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
 Images and links are given alternate text descriptions \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
 Tables are tagged, so that the table structure can be established \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
 Unicode descriptions of all characters are required \par
-}\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi360 An important practical application of an accessible document is that it is possible to \lquote reflow\rquote  a text document, so that it can be displayed on any device with any number of characters per row.\par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 In this document, we explain how a custom class file can be used to generate a range of document formats with common formatting, and how the document content can be shared with coworkers using WYSIWYG tools. We explain how the same source file can be used to generate a 508-compliant PDF direct from {\plain L{\up6\fs19 A}T{\dn7 E}X}. We also show some of the limitations of the method and what remains to be fixed. Our goal is that this will be a \lquote living\rquote  document that can be updated as we gain new insight into this process.\par
-\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb240 \fi0 2  The pieces of the puzzle\par
-\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.1  Producing an accessible PDF from LaTeX\par
-\pard\plain\s5\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \sb180 \fi0 {\*\bkmkstart BMsec_meta_cls}2.1.1{\*\bkmkend BMsec_meta_cls}  A \ldblquote meta\rdblquote  LaTeX style file\par
+}\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi360 A document that has these characteristics is often referred to as being \lquote 508 compliant\rquote . This adds another level of complexity: not only does a document need to be converted into something that a WYSIWYG word processor can read, but the output {\i .pdf} needs to be 508-compliant. As 508-compliance is often judged using automated tests on the {\i .pdf} file, there is no option to work around this by using careful text descriptions of figures, for example.\par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 In this document, we explain how a custom class file can be used to generate a range of document formats with common formatting, and how the document content can be shared with coworkers using WYSIWYG tools. We explain how the same source file can be used to generate a 508-compliant {\i *.pdf} direct from {\plain L{\up6\fs19 A}T{\dn7 E}X}. We also show some of the limitations of the method and what remains to be fixed. Our goal is that this will be a \lquote living\rquote  document that can be updated as we gain new insight into this process.\par
+\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb240 \fi0 2  A workflow for producing accessible .pdf files\par
+{\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Define a class file that contains the correct formatting, etc, using article, report or book classes. Include the minimum number of up-to-date packages in the class and add the nag package to make sure that all users can see that those packages are not deprecated. \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Provide tools to add accessibility support to the {\i .pdf} file \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Create a template showing how to use the class file \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Create a source code repository for the class and template files, and distribute the URL of the repository to LaTeX users \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Create documents using the standard class file on local or network drives, or using collaborative tools like writeLaTeX \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Convert the tex files to rtf using LaTeX2rtf, available at http://latex2rtf.sourceforge.net \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Get edits and peer reviews done on a cleaned-up .rtf file that has been saved as .doc or .docx \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
+Transfer edits from the .doc or .docx document back in to \rquote tex manually, and complete the PDF production in LaTeX. \par
+}\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi360 The rest of this section gives details on each of the above steps.\par
+\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb120 \fi0 {\*\bkmkstart BMsec_meta_cls}2.1{\*\bkmkend BMsec_meta_cls}  A \ldblquote meta\rdblquote  LaTeX style file\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 A class file called {\i meta.cls} has been written to implement common formatting requirements in {\plain L{\up6\fs19 A}T{\dn7 E}X} across the standard {\plain L{\up6\fs19 A}T{\dn7 E}X} article, report, book, and memoir classes. The class file calls a common group of packages (Table {\field{\*\fldinst{\lang1024 REF BMTab_Packages \\* MERGEFORMAT }}{\fldrslt{1}}}) regardless of the chosen class. Slightly different options are chosen for those packages if the document uses the memoir class, or if the document uses chapters or not. The class can be customized to meet specific formatting requirements. \par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 This approach gives a single file which contains all of the formatting required to produce a range of documents. For example, an organization that wants to implement an in-house {\plain L{\up6\fs19 A}T{\dn7 E}X} publishing system can customize the {\i meta.cls} and then make the class file available through a subversion server from which authors pick up the current class file. Each user can then install the class file in their tex structure or in the directory with their files. Similarly, changes are easy to implement in the style file and roll out to users, and because documents are {\plain L{\up6\fs19 A}T{\dn7 E}X}-based it is easy to recompile old documents.\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 The {\b {\i meta}} class is written so that it will accept all of the standard global {\plain L{\up6\fs19 A}T{\dn7 E}X} options, as well as options that are specific to the underlying class that the user has chosen. In the preamble, the user just has to write:\par
@@ -191,7 +207,7 @@ Unicode descriptions of all characters are required \par
 {\trowd\cellx975\cellx1755\cellx4875\cellx5655\cellx7215
 {\pard\intbl\ql {graphicx}\cell}
 {\pard\intbl\ql {}\cell}
-{\pard\intbl\ql {graphics handling, including {\i .eps} figures (see Section {\field{\*\fldinst{\lang1024 REF BMsec_Alttext \\* MERGEFORMAT }}{\fldrslt{2.1.2}}})}\cell}
+{\pard\intbl\ql {graphics handling, including {\i .eps} figures (see Section {\field{\*\fldinst{\lang1024 REF BMsec_Alttext \\* MERGEFORMAT }}{\fldrslt{2.2.1}}})}\cell}
 {\pard\intbl\ql {y}\cell}
 {\pard\intbl\ql {}\cell}
 \row}
@@ -287,7 +303,9 @@ Unicode descriptions of all characters are required \par
 {\pard\intbl\ql {the tool tip is suppressed}\cell}
 \row}
 } \par
-}\pard\plain\s5\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \sb360 \fi0 {\*\bkmkstart BMsec_Alttext}2.1.2{\*\bkmkend BMsec_Alttext}  Alternative text\par
+}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb360 \fi0 2.2  Accessibility support\par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 {\plain L{\up6\fs19 A}T{\dn7 E}X} does not prepare a structured PDF document directly. Instead, we use the {\b {\i accessibility}} package to do this for us. This generates a tagged PDF that passes most automated document tests. The {\b {\i accessibility.sty}} package can be downloaded from http://www.babs.gmxhome.de/download/da\\s\\do6({\fs20 p})dftex/accessibility.sty\~ ({\f3 http://www.babs.gmxhome.de/download/da\\_pdftex/accessibility.sty}). Note that line 131 in {\b {\i accessibility.sty}} should be commented out ({\i pdfoptionpdfminorversion} is set elsewhere).\par
+\pard\plain\s5\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \sb120 \fi0 {\*\bkmkstart BMsec_Alttext}2.2.1{\*\bkmkend BMsec_Alttext}  Alternative text\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 Alernative text, or \lquote Alt text\rquote , is a textual description of an equation, link or figure that can be used to replace the visual information in that element. This is often seen as a text \lquote pop-up\rquote  in PDF readers. For example, passing the pointer over the following readers should reveal a pop-up: {\par
 \pard\plain\s12\ql\sb120\sa120\keep\widctlpar\f0\tqc\tx3900\tqr\tx7800\sl240\slmult1 \fi0 \tab
 {\field{\*\fldinst{ EQ {\i a}\\s\\up6({\fs20 2})+{\i b}\\s\\up6({\fs20 2})={\i c}\\s\\up6({\fs20 2})}}{\fldrslt }}
@@ -1073,9 +1091,7 @@ cc52e9e602fb92866c065c1d6f95fd204cb6249428c602dfc3f62385b604673158449bc06974b079
 \par
 \pard\plain\s51\qc\sb120\sa120\keep\widctlpar\f0\sl240\slmult1 \fi0 (b) Another chick.\par
 \pard\plain\s30\ql\sb120\sa120\keep\widctlpar\f0\sl240\slmult1 \fi0 {Figure {\*\bkmkstart BMfig_ChickWithAltText}1{\*\bkmkend BMfig_ChickWithAltText}: Test images}{\field{\*\fldinst TC "1 Test images" \\f f}{\fldrslt }}\par
-}\pard\plain\s5\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \sb360 \fi0 {\*\bkmkstart BMsec_PDFprep}2.1.3{\*\bkmkend BMsec_PDFprep}  Preparing a structured PDF\par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 {\plain L{\up6\fs19 A}T{\dn7 E}X} does not prepare a structured PDF document directly. Instead, we use the {\b {\i accessibility}} package to do this for us. This generates a tagged PDF that passes most automated document tests.\par
-\pard\plain\s5\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \sb120 \fi0 2.1.4  Problems with embedded fonts\par
+}\pard\plain\s5\ql\sb240\sa120\keepn\f0\b\fs24\sl240\slmult1 \sb360 \fi0 2.2.2  Problems with embedded fonts\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 One requirement of passing automated tests for accessibility is that fonts must be embedded in the the final PDF. You can check the PDF for embedded fonts using a PDF viewer. For example, in Adobe Acrobat Reader, look at the \lquote fonts\rquote  tag of the document properties. If any fonts are not shown as being an {\i embedded subset}, you need to try again. \par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 Encapsulated postscript figures are particularly prone to having undefined fonts. Check by compiling your document in draft mode, and seeing if the fonts are still present in the output PDF. To fix this problem, you could consider changing the {\i .eps} file to a {\i .png}. If you wish to do this \lquote on the fly\rquote , you could use this approach in your preamble:\par
 {\pard\plain\s38\ql\widctlpar\f3\fs24\sl240\slmult1 \fi0 
@@ -1084,7 +1100,9 @@ cc52e9e602fb92866c065c1d6f95fd204cb6249428c602dfc3f62385b604673158449bc06974b079
 \par  \{.eps\}\{png\}\{.png\}\{convert eps:\\SourceFile.\\SourceExt png:\\OutputFile\}
 \par \\AppendGraphicsExtensions\{.png\}
 \par \par
-}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.2  Changing to a WYSIWYG-readable format using Latex2rtf\par
+}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.3  A template\par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 The code used to produce this document is available from https://github.com/AndyClifton/AccessibleMetaClass\~ ({\f3 https://github.com/AndyClifton/AccessibleMetaClass}). \par
+\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb120 \fi0 2.4  Changing to a WYSIWYG-readable format using Latex2rtf\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 {\b {\i latex2rtf}} reads {\i .tex} files and converts common {\plain L{\up6\fs19 A}T{\dn7 E}X}commands into their rich text format equivalent. It can be downloaded from {\f3 http://latex2rtf.sourceforge.net}.\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 We want to use the same source file for the PDF and for the conversion to a WYSIWYG-readable format. To ensure compatibility between the {\i .tex} file and {\b {\i latex2rtf}}, we limit the packages used in the {\b {\i meta}} class to those that can be understood by {\b {\i latex2rtf}}. Also, {\b {\i latex2rtf}} can read {\b {\f3 input}} files and has some capacity to deal with {\b {\f3 \\newcommand}}s. Therefore, we have created a file to remap all of the environments that are available using the {\b {\i meta}} class to simpler forms that can be understood by {\b {\i latex2rtf}}. This file is called {\i Latex2rtf_meta_with_acc.tex}. \par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 If you are using the command line version of Latex2rtf, you can convert your latex file using the commands,\par
@@ -1099,8 +1117,13 @@ cc52e9e602fb92866c065c1d6f95fd204cb6249428c602dfc3f62385b604673158449bc06974b079
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 {\b Check new packages.} If you add a new package to the {\i meta.cls} file (not recommended), try the conversion immediately, and then again once you actually use one of the new environments or commands. If you\rquote ve added a new package that {\b {\i latex2rtf}} doesn\rquote t support, you may need to edit the file {\i Latex2rtf_meta_with_acc.tex} to redefine those commands to something that will get you through the conversion (and review). \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 {\b Avoid custom commands.} {\b {\i latex2rtf}} does not work well with custom commands. A list of all recognized commands is available in the manual at {\f3 http://latex2rtf.sourceforge.net/latex2rtf.pdf}. If you have custom commands, you may need to redefine those to work with the commands that {\b {\i latex2rtf}} does recognize, and place these in the preamble. To separate your commands from those that are required for compatibility with the {\b {\i meta}} class, place your commands in a separate file (e.g {\i Latex2rtf_meta_with_acc_CUSTOM.tex}). \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 {\b Remove all of your to-do notes.} We\rquote ve all forgotten to do this at one time or another... \par
-}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.3  Putting the puzzle together\par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 So far we have identified two discrete paths that our document will take. These are 1. compiling the {\plain L{\up6\fs19 A}T{\dn7 E}X} document using normal {\b {\i pdftex}}, and 2. converting to something portable using {\b {\i latex2rtf}}. And, to keep things tidy, we would like to use the same source for each step. \par
+}\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb300 \fi0 3  Unified source document\par
+\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 So far we have identified two discrete paths that our document will take. These are {\par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 1.\tab
+Compiling the {\plain L{\up6\fs19 A}T{\dn7 E}X} document using normal {\b {\i pdftex}} \par
+\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 2.\tab
+Converting to something portable using {\b {\i latex2rtf}}. \par
+}\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 And, to keep things tidy, we would like to use the same source for each step. \par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 Fortunately, {\b {\i latex2rtf}} offers a boolean, {\b {\f3 \\iflatextortf}}. If {\b {\i latex2rtf}} is used, {\b {\f3 \\iflatextortf}} will be TRUE. This means that we can create a preamble that accommodates both paths:\par
 {\pard\plain\s38\ql\widctlpar\f3\fs24\sl240\slmult1 \fi0 
 \par \\newif\\iflatextortf
@@ -1112,7 +1135,7 @@ cc52e9e602fb92866c065c1d6f95fd204cb6249428c602dfc3f62385b604673158449bc06974b079
 \par     \\documentclass[draft, report]\{meta\} 
 \par \\fi
 \par \par
-}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.4  Including code listings\par
+}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 3.1  Including code listings\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 The {\b {\i listings}} package is one of several packages that can be used to typeset source code, and is used in this document. Unfortunately, {\b {\i listings}} is not compatible with {\b {\i latex2rtf}}, and so we need a workaround that will be available to both {\b {\i latex2rtf}} and {\b {\i pdflatex}}. \par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 Using an example from Werner posted on tex.stackexchange.com, we default to the {\b {\f3 verbatim}} environment, and only use {\b {\i listings}} if we are compiling with {\b {\i pdflatex}}:\par
 {\pard\plain\s38\ql\widctlpar\f3\fs24\sl240\slmult1 \fi0 %
@@ -1126,7 +1149,7 @@ cc52e9e602fb92866c065c1d6f95fd204cb6249428c602dfc3f62385b604673158449bc06974b079
 \par \}
 \par \\makeatother
 \par \par
-}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.5  The final preamble\par
+}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 3.2  The final preamble\par
 {\pard\plain\s38\ql\widctlpar\f3\fs24\sl240\slmult1 \sb60 \fi0 %
 \par \\newif\\iflatextortf
 \par 
@@ -1153,10 +1176,7 @@ cc52e9e602fb92866c065c1d6f95fd204cb6249428c602dfc3f62385b604673158449bc06974b079
 \par \\begin\{document\}
 \par 
 \par \par
-}\pard\plain\s4\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb180 \fi0 2.6  Code to produce this document\par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 The code used to produce this document is available from https://github.com/AndyClifton/AccessibleMetaClass\~ ({\f3 https://github.com/AndyClifton/AccessibleMetaClass}). \par
-\pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \fi360 Compiling the {\plain L{\up6\fs19 A}T{\dn7 E}X} source requires the {\b {\i accessilbity.sty}} package, which can be downloaded from http://www.babs.gmxhome.de/download/da\\s\\do6({\fs20 p})dftex/accessibility.sty\~ ({\f3 http://www.babs.gmxhome.de/download/da\\_pdftex/accessibility.sty}). Note that line 131 in {\b {\i accessilbity.sty}} should be commented out ({\i pdfoptionpdfminorversion} is set elsewhere).\par
-\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb240 \fi0 3  What doesn\rquote t work\par
+}\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb300 \fi0 4  Problems with this approach\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 There are a few things that still need to be fixed.\par
 {\pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li600\fi-300 \bullet\tab
 Problems associated with the {\b {\i accessibility}} package: {\par
@@ -1166,7 +1186,7 @@ formatting in section headings such as {\b0\i0\scaps0\f3 \\emph\{\}} breaks comp
 empty {\i .bbl} files also break it \par
 \pard\plain\s46\ql\fi-283\li283\lin283\sb0\sa120\widctlpar\tql\tx283\f0\fs24\sl240\slmult1 \sb50 \li1200\fi-300 \bullet\tab
 there\rquote s an extra line at the start of {\b {\f3 lstlisting}} environments \par
-}}\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb340 \fi0 4  Conclusions\par
+}}\pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb340 \fi0 5  Conclusions\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 In order to generate accessible {\i .pdf} files with {\plain L{\up6\fs19 A}T{\dn7 E}X} that can also be shared with WYSIWYG word processor users, a {\plain L{\up6\fs19 A}T{\dn7 E}X} meta class was created. This meta class uses a well-defined set of packages that limits the scope of the casual \rquote tex author from fiddling, whilst giving them tools to create complex technical documents. Accessible {\i .pdf} files are compiled directly from the {\plain L{\up6\fs19 A}T{\dn7 E}X}source code, while {\i .rtf} files are written using the {\b {\i latex2rtf}} program. This meets the users\rquote  need for a single source file and minimal intervention.\par
 \pard\plain\s3\ql\sb240\sa120\keepn\f0\b\fs32\sl240\slmult1 \sb240 \fi0 Acknowledgements\par
 \pard\plain\s0\qj\widctlpar\f0\fs24\sl240\slmult1 \sb60 \fi0 This document benefitted from contributions to the website, {\f3 http://tex.stackexchange.com/}.\par
