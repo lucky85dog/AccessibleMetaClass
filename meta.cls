@@ -39,6 +39,10 @@
 \newboolean{HasChapters}
 \setboolean{HasChapters}{false}
 
+% tagged?
+\newboolean{IsTagged}
+\setboolean{IsTagged}{false}
+
 % -------------------------------------------------------------
 % Check for choice of package and formatting options
 % -------------------------------------------------------------
@@ -71,6 +75,10 @@
 	\def\meta@class{article}
 	\typeout{Using modified article class}
 	}
+\DeclareOption{tagged}{
+	\setboolean{IsTagged}{true}
+	\typeout{PDF will be tagged}
+	}
 
 % -------------------------------------------------------------
 % Process Options
@@ -99,7 +107,7 @@
 \RequirePackage{courier}
 
 % ams math
-\RequirePackage{amsfonts,amssymb}
+\RequirePackage{amsfonts,amssymb,amsmath}
 
 % gensymb. Required for degrees symbol
 \RequirePackage{gensymb}
@@ -118,12 +126,14 @@
 \RequirePackage[T1]{fontenc}
 
 % colours
-\usepackage{color}
+\RequirePackage{color}
 \RequirePackage{xcolor}
 \definecolor{prettyblue}{RGB}{0, 121, 193}
 
 % set languages
 \RequirePackage[english]{babel}
+    \addto{\captionsenglish}{\renewcommand{\bibname}{References}}
+    \addto\captionsenglish{\renewcommand{\contentsname}{Table of Contents}}
 
 % enable subfigures
 \RequirePackage{subfigure}
@@ -229,7 +239,6 @@
 	% additional spacing
 	\setlength{\cftbeforefigureskip}{5pt}
 	\setlength{\cftbeforetableskip}{5pt}
-
 }
 
 
@@ -322,9 +331,6 @@
 \let\printlottitle\printtoctitle
 \let\printloftitle\printtoctitle
 
-% Format Table of Contents, figures, etc
-\renewcommand{\contentsname}{Table of Contents}
-
 % Format Captions
 \RequirePackage[format=plain,
 	labelformat=simple,
@@ -345,7 +351,6 @@
 	\counterwithout{figure}{chapter}
 	\counterwithout{table}{chapter}
 }
-
 
 % Create some figure and table caption styles that are narrower than textwidth. These look better with small floats.
 \DeclareCaptionStyle{narrow}{width=4.5in,
@@ -397,44 +402,58 @@
 	\RequirePackage[unicode, pdfa, final, linktocpage, colorlinks, linktoc=all, linkcolor=blue, citecolor=blue, menucolor=blue, urlcolor=blue, pdfborder={0 0 0},unicode]{hyperref}
 	}
 
-% Format Bibliography
-\ifthenelse{\boolean{HasChapters}}{% True
-	\renewcommand{\bibsection}{\chapter{References}}
-	}{% False
-	\renewcommand{\bibsection}{\section{References}}
-	}
-
 % PDF properties
 \pdfminorversion=8
-\makeatletter
-\AtBeginDocument{
-  \hypersetup{
-    pdftitle = {\@title},
-    pdfauthor = {\@author}
-  }
-}
-\makeatother
 
 % Enable tooltips
 \RequirePackage[linewidth = 1]{pdfcomment}
-% Fix incorrect display of tooltips (http://tex.stackexchange.com/a/74340/3323)
-\makeatletter
-\renewcommand{\pc@annot@tooltip}%
-{%
-  /TU (\pc@pdfenc@contents)\space%
-  /T (tooltip \thezref@unique)\space%
-  /C [0 0 0]\space%
-  /FT/Btn\space%
-  /Ff 65536\space%
-  /H/N\space%
-}%
-\makeatother
-
 
 \ifthenelse{\boolean{IsMemoir}}{ % for some reason this is overridden from above so need to define at end
 	\renewcommand{\printtoctitle}[1]{\color{prettyblue} \raggedright  \Large\sffamily\bfseries #1}
 	\renewcommand{\printloftitle}[1]{\color{prettyblue} \raggedright  \Large\sffamily\bfseries #1}
 	\renewcommand{\printlottitle}[1]{\color{prettyblue} \raggedright  \Large\sffamily\bfseries #1}
 }
+
+% CODE / VERBATIM
+\@ifundefined{lstlisting}{}{%
+  \let\verbatim\relax%
+  \lstnewenvironment{verbatim}{\lstset{language=[LaTeX]TeX,                     % the language of the code
+  basicstyle=\small\sffamily,
+  numbers=left,                   % where to put the line-numbers
+  numberstyle=\tiny\color{gray},  % the style that is used for the line-numbers
+  stepnumber=1,                   % the step between two line-numbers. If it's 1, each line will be numbered
+  numbersep=5pt,                  % how far the line-numbers are from the code
+  backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+  showspaces=false,               % show spaces adding particular underscores
+  showstringspaces=false,         % underline spaces within strings
+  breaklines=true,                % sets automatic line breaking
+  breakatwhitespace=true,        % sets if automatic breaks should only happen at whitespace
+  keywordstyle=\color{blue},      % keyword style
+  commentstyle=\color{gray},   % comment style
+  stringstyle=\color{green},      % string literal style
+  escapeinside={\%*}{*)},         % if you want to add a comment within your code
+  morekeywords={*,...}}%            % if you want to add more keywords to the set
+}{}%
+}
+
+%% ACCESSIBILITY
+\ifthenelse{\boolean{IsTagged}}{% True
+	\RequirePackage[tagged]{accessibility_meta}
+	}{ %else
+	% nothing
+}
+
+%% THINGS WE NEED TO DO AT THE START OF THE DOCUMENT
+\AtBeginDocument{
+	\makeatletter
+	\hypersetup{
+		pdftitle = {\@title},
+		pdfauthor = {\@author}
+	}
+	\makeatother
+	\maketitle
+	\clearpage	
+}
+
 
 % end of file
