@@ -27,6 +27,7 @@
 \tableofcontents
 \listoffigures
 \listoftables
+\clearpage
 
 \section{Introduction}
 The de-facto standard for scientific publishing is \LaTeX. \LaTeX\ is often preferred over WYSIWYG word processors for technical documents because of the relatively simple file format that can be shared across users on many different platforms, and the ease of formatting a document for journal publication. In contrast, many organizations have publishing workflows built around WYSIWYG tools, which often include PDF creators. WYSIWYG word processing tools often include the ability to edit a document and track input from co-workers or dedicated editors, which simplifies the review process. Although changes can be compared between \LaTeX documents using command line tools, editors in a corporate environment may lack the training to edit \LaTeX\ source files. So, \LaTeX\ does not fit well in a corporate document preparation workflow unless \LaTeX\ files can be converted into something that can be read by a WYSIWYG editor.
@@ -117,10 +118,18 @@ toclifbind & nottoc, notlot, notlof & & &\\
 todonotes & & inline and margin to-do notes & \checkmark & Notes are prefaced with \textbf{To Do:} in the output\\
 listings & & & &\\
 caption & & & &\\
+cmap & & & &\\
 pdfcomment & & tool-tips. Also calls the package \packagename{hyperref} & \checkmark & the tool tip is suppressed \\
+accessibility & & provides tags and document structure & & \\
 \bottomrule
 \end{tabular*}
 \end{table*}
+
+The meta class also includes a few options related to the PDF files that pdflatex produces:
+\begin{description}
+\item[pdfinterwordspaceon]{Turns on inter-word spacing in PDFs. Requires TexLive 2014.}
+\item[pdfminorversion=8]{Sets the PDF version.}
+\end{description}
 
 \subsection{Accessibility support}
 \LaTeX\ does not prepare a structured PDF document directly. Instead, we use the \packagename{accessibility} package to do this for us. This generates a tagged PDF that passes most automated document tests. The \packagename{accessibility.sty} package can be downloaded from \href{http://www.babs.gmxhome.de/download/da_pdftex/accessibility.sty}{http://www.babs.gmxhome.de/download/da\_pdftex/accessibility.sty}. Note that line 131 in \packagename{accessibility.sty} should be commented out (\fn{pdfoptionpdfminorversion} is set in the \fn{meta.cls}).

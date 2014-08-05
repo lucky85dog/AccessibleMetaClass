@@ -15,6 +15,10 @@
 % -------------------------------------------------------------
 % Create Options
 % -------------------------------------------------------------
+% PDF properties
+\pdfinterwordspaceon
+\pdfminorversion=8
+
 \RequirePackage{xifthen}
 
 % Mark as draft
@@ -401,9 +405,7 @@
 	}{% False
 	\RequirePackage[unicode, pdfa, final, linktocpage, colorlinks, linktoc=all, linkcolor=blue, citecolor=blue, menucolor=blue, urlcolor=blue, pdfborder={0 0 0},unicode]{hyperref}
 	}
-
-% PDF properties
-\pdfminorversion=8
+\RequirePackage{cmap}
 
 % Enable tooltips
 \RequirePackage[linewidth = 1]{pdfcomment}
